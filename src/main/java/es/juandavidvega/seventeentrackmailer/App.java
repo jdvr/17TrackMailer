@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.mail.MessagingException;
 
+import es.juandavidvega.seventeentrackmailer.mail.MailSender;
 import es.juandavidvega.seventeentrackmailer.notifytask.NotifyTaskLoader;
 import es.juandavidvega.seventeentrackmailer.trackinfo.PackageInfo;
 import es.juandavidvega.seventeentrackmailer.trackinfo.PackagesInfo;

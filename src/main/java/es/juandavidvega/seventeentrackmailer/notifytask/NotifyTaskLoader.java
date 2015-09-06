@@ -1,38 +1,32 @@
 package es.juandavidvega.seventeentrackmailer.notifytask;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 
 public class NotifyTaskLoader {
     private static final String NotifyTaskDotJsonPath = "/var/17tracker/NotifyTasks.json";
-    public static final ArrayList<String> EmptyList = new ArrayList<>();
+    public static final String[] EmptyLines = new String[0];
 
     public NotifyTaskSet load() throws IOException {
-
         return getNotifyTaskSetFrom(jsonData());
     }
 
-    private ArrayList<String> jsonData() throws IOException {
-        ArrayList<String> notifyTaskFileContent = new ArrayList<>();
-        try{
-            File notifyTaskFile = new File(NotifyTaskDotJsonPath);
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(notifyTaskFile));
-            String line;
-            while ((line = bufferedReader.readLine()) != null)
-                notifyTaskFileContent.add(line);
-        } catch (FileNotFoundException ex) {
-            return EmptyList;
+    public String[] jsonData() throws IOException {
+        Path path = Paths.get(NotifyTaskDotJsonPath);
+        try (Stream<String> stream = Files.lines(path)) {
+            return stream.toArray(String[]::new);
+        } catch (IOException e) {
+            return EmptyLines;
         }
-        return notifyTaskFileContent;
     }
 
-    private NotifyTaskSet getNotifyTaskSetFrom(ArrayList<String> jsonData) {
+    private NotifyTaskSet getNotifyTaskSetFrom(String[] jsonData) {
         NotifyTaskSet notifyTaskSet = new NotifyTaskSet();
         for (String jsonNotifyTask : jsonData)
             addIfiSValid(notifyTaskSet, jsonNotifyTask);

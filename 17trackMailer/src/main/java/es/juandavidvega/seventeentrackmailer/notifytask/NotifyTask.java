@@ -5,6 +5,7 @@ package es.juandavidvega.seventeentrackmailer.notifytask;
  */
 public class NotifyTask {
 
+    public static final String PrintFormat = "- %s ( %s )";
     public final String targetEmail;
     public final String targetTrackNumber;
 
@@ -20,5 +21,10 @@ public class NotifyTask {
 
     public String targetTrackNumber(){
         return this.targetTrackNumber;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(PrintFormat, targetTrackNumber, targetEmail);
     }
 }
